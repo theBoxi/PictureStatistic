@@ -53,7 +53,7 @@ public class MainFrame extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		
 		JMenu editMenu = new JMenu("Bearbeiten");
-		JMenuItem addFolderItem = new JMenuItem("Ordner HinzufÃ¼gen");
+		JMenuItem addFolderItem = new JMenuItem("Ordner Hinzufügen");
 		addFolderItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
             	JFileChooser fc = new JFileChooser();
