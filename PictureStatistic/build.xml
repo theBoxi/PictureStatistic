@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="jar" name="PictureStatistic">
+    <!-- Ordnerstruktur -->
+    <property name="project.root" location="./" />
+    <property name="src.dir" location="${project.root}/src/" />
+    <property name="bin.dir" location="${project.root}/bin/" />
+	<property name="lib.dir" location="${project.root}/lib/" />
+	<property name="tmp.dir" location="${project.root}/tmp/" />
+	
+    <!-- wichtige Files -->
+    <property name="junit.jar" location="${test.dir}/junit.jar" />
+    <property name="PictureStatistic.jar" location="${bin.dir}/PictureStatistic.jar" />
+	<property name="PictureStatistic-static.jar" location="${bin.dir}/PictureStatistic-static.jar" />
+    <property name="main.class" value="ch.boxi.pictureStatistic.main.Main" />
+
+    <!-- Alle libs die verwendet werden -->
+    <fileset id="lib.jars" dir="${lib.dir}">
+            <include name="hsqldb.jar"/>
+            <include name="jcommon-1.0.6.jar"/>
+            <include name="jfreechart-1.0.2.jar"/>
+            <include name="metadata-extractor-2.3.1.jar"/>
+            <include name="swtgraphics2d.jar"/>
+    </fileset>
+    
+    <path id="libs">
+        <fileset refid="lib.jars"/>
+    </path>    
+
+    <!-- Compiliert das Ganze Projekt -->
+    <target name="compile">
+        <mkdir dir="${bin.dir}" />
+        <javac srcdir="${src.dir}" destdir="${bin.dir}" classpathref="libs" />
+    </target>
+
+    <!-- Erstellt ein Projekt jar File -->
+    <target name="jar" depends="compile">
+        <jar destfile="${PictureStatistic.jar}" basedir="${bin.dir}" includes="**/*.class">
+            <include name="**/*.class" />
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}" />
+            </manifest>
+        </jar>
+    </target>
+    
+    <!-- Erstellt ein Jar welches alle Librarys enthaellt -->
+    <target name="oneJar" depends="jar">
+        <mkdir dir="${tmp.dir}" />
+        <unjar dest="${tmp.dir}" src="${PictureStatistic.jar}" />
+        <unjar dest="${tmp.dir}">
+            <fileset refid="lib.jars" />
+        </unjar>
+        <delete dir="${tmp.dir}/META-INF"/>
+        <jar destfile="${PictureStatistic-static.jar}" basedir="${tmp.dir}" includes="**/*">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}" />
+            </manifest>
+        </jar>
+        <delete dir="${tmp.dir}" />
+    </target>
+
+</project>
